@@ -10,6 +10,7 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -24,21 +25,23 @@
     <nav class="nav-extended">
       <div class="nav-wrapper blue accent-2">
         <a href="#" class="brand-logo center">MTSv Summary</a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-
       </div>
       <div class="nav-content light-blue lighten-3">
         <ul class="tabs">
           <li class="tab" id="first"><a class="" href="#test1">CAMI Low Complexity</a></li>
           <li class="tab"><a class="" href="#test2">CAMI Med Complexity</a></li>
-
+          <div class="expander-buttons">
+            <a class="waves-effect waves-light btn-flat justify-right blue expander expand">Expand All</a>
+            <a class="waves-effect waves-light btn-flat justify-right blue expander collapse">Collapse All</a>
+          </div>
         </ul>
+
       </div>
     </nav>
   </header>
   <main>
 
-    <div id="root"></div>
+      <div id="root"></div>
 
   </main>
 

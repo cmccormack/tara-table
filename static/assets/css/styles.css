@@ -27,13 +27,32 @@ body, html {
   color: #1565c0 ;
 }
 
-#root {
-  margin-top: 30px;
+.nav-extended {
+  /* margin-bottom: 10px; */
+}
+
+.nav-extended .tabs {
+  display: flex;
+}
+
+.expander-buttons {
+  margin-left: auto;
+  align-self: center;
+}
+
+.expander.btn-flat {
+  color: white;
+  border-radius: 3px;
+  margin-left: 0;
 }
 
 #root .row {
-  margin-bottom: 0;
   border: 0;
+  margin: 0;
+}
+
+#root .row .col {
+  text-align: center;
 }
 
 #root .collapsible {
@@ -47,9 +66,24 @@ body, html {
 }
 
 #root #data-header {
-  line-height: 50px;
+  padding: .5rem;
+  padding-left: 1.7rem;
+  display: flex;
+  align-items: center;
+  font-weight: 200;
+  font-size: 1.3rem;
 }
 
 .node.inactive, .leaf.inactive {
   display: none;
+}
+
+.green-check {
+  font-weight: bolder;
+  color: green;
+}
+
+.red-x {
+  font-weight: bolder;
+  color: red;
 }

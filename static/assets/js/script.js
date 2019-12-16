@@ -6,46 +6,80 @@ M.Tabs.init(document.querySelector('.tabs'))
 
 const { ranks } = data.meta
 
-const buildTree = (data) => {
+// Sort columns by colIndex
+const sortedColumns = data.values.sort((a, b) => a.colIndex - b.colIndex)
 
-  const isLeaf = data.children.length === 0
+// Apply custom filter against columns during render
+const columnFormat = (propName, value) => {
+  switch (propName) {
+    case "Significant":
+      value = value.replace(/true/gi, '<span class="green-check">✔</span>');
+      value = value.replace(/false/gi, '<span class="red-x">✘</span>');
+  }
+  return value
+}
+
+const buildTree = (node) => {
+
+  const isLeaf = node.children.length === 0
   const body = isLeaf
     ? ''
     : `
       <div class="collapsible-body">
-        ${data.children.map(item => buildTree(item)).join('\n')}
+        ${node.children.map(buildTree).join('\n')}
       </div>
     `
 
   return `
-    <ul class="node collapsible expandable active">
+    <ul class="node ${isLeaf ? '' : 'collapsible'} active">
       <li class="${isLeaf ? 'leaf' : 'node'}">
-        <div class="row collapsible-header ${ranks[data.level].color} ">
-          <span class="arrow">▶</span>
-          <div class="col s2">${data.level} - ${data.name}</div>
-          ${data.values.map(value => `<div class="col s2">${Number(value).toFixed(0)}</div>`).join('\n')}
-        </div>
+        <div class="row collapsible-header ${ranks[node.values.Level].color} ">
+          ${
+    isLeaf
+      ? '<i class="material-icons arrow-wrapper"></i>'
+      : '<i class="material-icons arrow-wrapper arrow">keyboard_arrow_right</i>'
+    }
+          ${data.values.map(value => `<div class="col s${value.colWidth}">${columnFormat(value.propName, node.values[value.propName])}</div>`).join('\n')}
+        </div >
         ${body}
-      </li>
-    </ul>
+      </li >
+    </ul >
   `
 
 }
 
 const header = `
-  <div id="data-header" class="row blue darken-3 white-text">
-      ${data.values.map(value =>
-  `<div class="col s2">${value}</div>`
-).join('\n')}
-  </div>
-`
+  <div id = "data-header" class="row grey lighten-3 black-text">
+    ${data.values.map(value => `<div class="col s${value.colWidth}">${value.header}</div>`).join('\n')}
+  </div >
+  `
 
 root.innerHTML = header + data.children.map(buildTree).join('\n')
 
-const collapsibles = document.querySelectorAll('.collapsible.expandable');
-const collapseOptions = {
-  accordion: false,
-  onOpenStart: li => li.querySelector('.arrow').textContent = "▼",
-  onCloseStart: li => li.querySelector('.arrow').textContent = "▶",
+const toggleExpand = (e, instances, state) => {
+  switch (state) {
+    case "open":
+      instances.forEach(elem => elem.open(0))
+      break;
+    case "close":
+      instances.forEach(elem => elem.close(0))
+      break;
+  }
 }
-const collapsible_instances = M.Collapsible.init(collapsibles, collapseOptions);
+
+document.addEventListener('DOMContentLoaded', function () {
+  const expandButton = document.getElementsByClassName('expand')[0]
+  const collapseButton = document.getElementsByClassName('collapse')[0]
+
+  const collapsibles = document.querySelectorAll('.collapsible');
+  const collapseOptions = {
+    accordion: false,
+    onOpenStart: li => li.querySelector('.arrow').textContent = "keyboard_arrow_down",
+    onCloseStart: li => li.querySelector('.arrow').textContent = "keyboard_arrow_right",
+  }
+  const collapsible_instances = M.Collapsible.init(collapsibles, collapseOptions);
+
+  expandButton.addEventListener('click', (e) => toggleExpand(e, collapsible_instances, 'open'))
+  collapseButton.addEventListener('click', (e) => toggleExpand(e, collapsible_instances, 'close'))
+});
+
